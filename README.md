@@ -102,7 +102,7 @@
         ```bash
         docker exec -it oracle-xe sqlplus system/P12345s!@XE
 
-        21.0.0.0.0 - Production on Thu Feb 26 04:44:53 2026
+        SQL*Plus: Release 21.0.0.0.0 - Production on Thu Feb 26 04:44:53 2026
         Version 21.3.0.0.0
 
         Copyright (c) 1982, 2021, Oracle.  All rights reserved.
@@ -122,10 +122,9 @@
         CREATE USER java IDENTIFIED BY java12345;
 
         GRANT CONNECT, RESOURCE TO java ;
-
         GRANT CREATE TABLE TO java;
 
-        grant all privileges to java;
+        GRANT all privileges To java;  -- INSERT등 추가권한 할당
 
 ### 데이터베이스 개발툴 DBeaver 설치
 
@@ -140,11 +139,11 @@
     - Community Edition 클릭 windows (Installer) 선택
 
 3. vs code 확장
-    - d
+    - dDatabase Client, Database Client JDBC 확장 설치
 
 
 
-        ![alt text](image-8.png)
+    ![alt text](image-8.png)
 
 ### DBeaver 사용법
 
@@ -192,4 +191,130 @@
 - SQL(Structured Query Language)
     - 구조화된 질의 언어
     - 관계형 데이터베이스에서 DBMS상에 데이터를 정의, 조작, 제어하기 위해 사용하는 표준 프로그래밍 언어
+
+## day02
+
+### DBeaver 사용법, DB작업시 사전지식
+- 메뉴 상 용어들
+    - 검색 > `DB Full-Text` - Full Text Search(대용량 텍스트 내에서 필요한 단어를 검색할 때)
+    - SQL 편집기 > `실행계획` - 현재의 쿼리가 실행되는데 비용이 얼마나 발생하는지 파악하는 기술. 최적화해서 실행속도 빠르게 하기 전에 분석
+    - 데이터베이스 > `트랜잭션` 모드 - 쿼리들이 실행되는 논리적 덩어리, Auto-Commit(조금 위험), None Commit
+
+![alt text](image-10.png)
+
+- 위 스키마 하위에서 지금 알아야 할 내용들
+    - 테이블
+    - 뷰
+    - 인덱스
+    - 스퀀스
+    - 프로시저
+    - 펑션
+    - +SQL 문법까지
+
+### 기본, SELECT문
+
+- 문법 이전 데이터 타입
+    - `NUMBER` 숫자타입, 최대 22byte
+    - INTEGER - 정수타입, 모든 데이터 기초 4byte(-21억 ~ +21억)
+    - FLOAT - 실수타입, 소수점포함, 최대 22byte
+    - `CHAR`(n) - Charactor 문자열 타입, 고정형, 최대 2000byte
+        - CHAR(20) 기본 'Hello World'를 저장하면, 'Hello World&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;'로 저장됨. 무조건 자리수를 20자리로 고정해서 생성
+    - `VARCHAR2`(n) - 가변형 문자열, 최대 4000byte
+        - 오라클에서 VARCHAR(n)는 사용안함
+        - VARCHAR2(20)으로 'Hello World'를 저장하면, 'Hello World'. 뒤에 9자리는 버림.
+    - `LONG`(n) - 가변길이 문자열, 최대 2Gbyte
+    - LONG RAW(n) - 바이너리(이진)데이터, 0과 1의 숫자로만 저장. 최대 2Gbyte
+    - CLOB - 대용량 텍스트타입, 최대 4Gbyte
+    - BLOB - 대용량 바이너리타입, 최대 4Gbyte
+    - `DATE` - 날짜타입. 문자열과 다름
+
+- 데이터 조회 3가지 방법 - [쿼리](./day02/1.%20데이터%20조회%20방법.sql)
+    - `셀렉션`(selecion) - 행단위로 조회
+    - `프로젝션`(projection) - 열단위로 조회
+    - `조인`(join) - 두 개 이상 테이블을 조합해서 조회
+
+- SELECT 문법
+    - 기본쿼리, 별명 - [쿼리](./day02/2.%20기본쿼리%20및%20별명지정쿼리.sql)
+    - 중복제거 - [쿼리](./day02/3.%20중복제거쿼리.sql)
+    - 정렬 - [쿼리](./day02/4.%20정렬쿼리.sql)
+    - WHERE절 - [쿼리](./day02/5.%20조건쿼리.sql)
+
+    ```sql
+    -- 주석 한줄 주석
+    /* 여러줄
+        주석(C언어 주석) */
+    -- 기본 문법
+    SELECT [*|열이름 나열]
+      FROM [dual|테이블명];
+
+    -- 별명추가
+    select 컬럼명 [AS 별명],
+           계산식 AS "별명",
+           ...
+      FROM 테이블명 [테이블명];
+
+    -- 데이터 정렬
+    SELECT 위와 동일
+      FROM 테이블명
+     ORDER BY [정렬할 열이름(여러개)][ASC|DESC];
+    /*
+    ASC - ascending(오름차순)
+    DESC - descending(내림차순)
+    ASC는 기본이고 생략가능
+    */
+
+    -- 조건절 WHERE절
+    -- 원하는 조건으로 다양하게 조회할 때
+    SELECT 위와 동일
+      FROM 테이블명
+    [WHERE 조회할 행을 선별하는 조건식] 
+    [ORDER BY [정렬할 열이름(여러개)][ASC|DESC]];
+    ```
+
+- SELECT 연산 - [쿼리](./day02/6.%20연산자.sql)
+
+    ``` SQL
+    -- 산술연산자 + - * /
+    -- 비교연산자 >(크다) <(작다) >=(크거나같다) <=(작거나같다) ==(같다) <>, != (같지않다)
+    -- 논리부정연산자 NOT
+    -- in = or와 동일
+    -- between
+    ```
+
+- 오라클 `함수` : DB별로 추가학습 필요 - [쿼리](./day02/8.%20오라클%20함수.sql)
+
+    - 문자열 함수
+        - `UPPER`(모두 대문자), `LOWER`(모두 소문자), `INITCAP`(첫글자만 대문자로)
+        - `LENGTH`(문자열길이)
+        - `SUDSTR`(문자열, 시작, 길이), 길이를 안적으면 끝까지 추출
+        - `INSTR`(문자열, 찾을문자열, [횟수]), 문자열에서 찾을 문자열의 위치를 리턴
+        - `REPLACE`(문자열, 찾는문자열, 바꿀문자열), 찾은 문자열을 바꿀문자열로 변경
+        - `LAPD`(문자열, 자리수, 채울문자열), RPAD(문자열, 자리수, 채울문자열), L/R 기준으로 자리수만큼 빈공간 특정문자로 채우기
+        - `CONCAT`(앞쪽문자열, 뒤쪽문자열), 두 문자열 합치기 
+        - `TRIM`(공백이 있는 문자열), `LTRIM`(공백이 있는 문자열), `RTRIM`(공백이 있는 문자열), 문자열 앞뒤의 빈공백 제거
+
+    - 숫자 함수
+        - `ROUND`(반올림할수, 반올림위치)
+        - `TRUNC`(숫자, 버림위치)
+        - `CEIL`(올림할수)
+        - `FLOOR`(내림할수)
+        - `MOD`(나머지구할수)
     
+### DB 특징
+
+- 모든 언어는 인덱스가 0부터 시작
+- 단, `데이터베이스는 인덱스 1부터` 시작!
+
+## Day03
+
+### 함수
+
+- 오라클 함수 계속
+    - 날짜함수
+    - 형변환함수
+    - NULL 처리함수
+    - DECODE, CASE
+
+### 데이터 그룹화
+
+### 조인
