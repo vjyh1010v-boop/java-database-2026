@@ -1,0 +1,43 @@
+/* JOIN !!!! */
+-- 관계형(Relational)DB, RDB에서 테이블을 합쳐서 표현하는 방법
+
+SELECT *
+  FROM EMP;
+
+SELECT *
+  FROM DEPT;
+
+-- 합치기 (그냥합치기 - 카테시안곱) * 99% 안씀
+SELECT *
+  FROM EMP, DEPT;
+
+-- 조인 = 등가조인 EQUI-JOIN INNER-JOIN SIMPLE JOIN
+SELECT *
+  FROM EMP, DEPT
+ WHERE EMP.DEPTNO = DEPT.DEPTNO ;
+
+-- 이름 사용
+SELECT EMP.EMPNO, EMP.ENAME, EMP.JOB
+     , EMP.MGR, EMP.HIREDATE, EMP.SAL
+     , EMP.SAL, DEPT.DEPTNO, DEPT.DNAME
+  FROM EMP, DEPT
+ WHERE EMP.DEPTNO = DEPT.DEPTNO;
+
+-- 별명 사용
+SELECT E.EMPNO, E.ENAME, E.JOB
+     , E.MGR, E.HIREDATE, E.SAL
+     , E.SAL, D.DEPTNO, D.DNAME
+  FROM EMP E, DEPT D
+ WHERE E.DEPTNO = D.DEPTNO;
+
+-- 비등가 조인
+SELECT *
+  FROM EMP;
+
+SELECT *
+  FROM SALGRADE;
+
+SELECT *
+  FROM emp e, salgrade s
+ WHERE e.sal BETWEEN s.losal AND s.hisal;
+
