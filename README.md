@@ -418,7 +418,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
 
 - 조인 기본 - [쿼리](./day03/7.%20JOIN.sql)
 
-## Day04
+ㅇ## Day04
 
 - 관계형 데이터베이스
     - 관련된데이터를 테이블 형태로 저장하고, 테이블간 관계를 통해 데이터를 관리하는 DB모델.
@@ -455,5 +455,41 @@ SQL> alter session set nls_date_format='dd-MON-rr';
     - LEFT|RIGHT OUTER JOIN ~ ON - 외부조인, LEFT, RIGHT는 생략 불가능
 
 - 서브쿼리
-    - 메인쿼리 내에 소괄호로 포함된 추가쿼리. SubQuery
+    - 메인쿼리 내에 소괄호로 포함된 추가쿼리. `SubQuery`
     - 대부분 조인으로 변경 가능
+    - 대부분 서브쿼리부터 작성 추천
+
+- 서브쿼리 종류
+    - 단일행 서브쿼리 - >, >=, =, <=, <, <>, != 비교연산자로 서브쿼리 사용
+    - 다중행 서브쿼리 
+        - `IN` - 메인쿼리 데이터가 서브쿼리 결과중 하나라도 일치하는 데이터가 있으면
+        - `ANY`, `SOME` - 메인쿼리의 조건식을 만족하는 서브쿼리의 결과가 하나 이상이면
+        - `ALL` - 메인쿼리의 조건식을 서브쿼리의 결과 모두가 만족하면
+        - `EXISTS` - 서브쿼리의 결과가 존재하면(행이 1개 이상일 경우)
+    - 다중열 서브쿼리 - 서브쿼리 결과가 여러 컬럼일 때
+    - FROM절 서브쿼리 - 가상의 테이블을 생성
+    - SELECT절 서브쿼리 - 스칼라 서브쿼리, JOIN으로 변경 가능
+
+### DML
+
+- SQL문은 DML, DDL, DCL 구성
+    - Data Manipulation Languae
+    - Data Definition Language
+    - Data Control Language
+
+- DML
+    - 데이터 조작 언어 - 데이터를 추가, 변경(수정), 삭제, 조회 하는 쿼리 명령어
+    - SELECT - 조회용 .. 사전 학습 O
+    - `INSERT` - 생성(추가)용
+
+        ```SQL
+        -- 기본 문법
+        INSERT INTO 테이블명 (열1, 열2, ... , 열n)
+        values (열1값, 열2값, ... , 열n값);
+        ```
+
+    - `UPDATE` - 변경(수정)용. 조심할 것~
+
+    - `DELETE` - 삭제용. 조심할 것~
+    - SELECT는 저장된 데이터에 조작이 없음. 그 외는 전부 데이터를 조작함.
+    - SELECT는 트랜잭션이 없고, 나머지는 트랜잭션이 매우 중요 !
