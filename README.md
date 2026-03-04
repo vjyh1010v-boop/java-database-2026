@@ -16,7 +16,6 @@
 - 대부분 기업의 `도메인 정보`를 저장하고 있음.
 - IT에서 가장 중요하게 생각해야할 기술 중 하나
 
-
 ![alt text](image.png)
 
 
@@ -96,6 +95,17 @@
 
         ![alt text](image-4.png)
 
+    - 멈춰있는 컨테이너 실행
+ 
+    ```bash
+    docker start [컨테이너ID]
+    ```
+
+    - 컨테이너 자동 실행 명령
+
+    ``` bash
+    docker update --restart=always [컨테이너ID]
+    
 
     - 컨테이너 내부 접속
 
@@ -113,18 +123,19 @@
         c Express Edition Release 21.0.0.0.0 - Production
         Version 21.3.0.0.0
 
-
-
+        SQL>
+        ```
 
     - 강의용 사용자 생성
 
         ```sql
         CREATE USER java IDENTIFIED BY java12345;
 
-        GRANT CONNECT, RESOURCE TO java ;
+        GRANT CONNECT, RESOURCE TO java;
         GRANT CREATE TABLE TO java;
 
         GRANT all privileges To java;  -- INSERT등 추가권한 할당
+        ```
 
 ### 데이터베이스 개발툴 DBeaver 설치
 
@@ -138,12 +149,11 @@
     - https://dbeaver.io/
     - Community Edition 클릭 windows (Installer) 선택
 
-3. vs code 확장
-    - dDatabase Client, Database Client JDBC 확장 설치
-
-
+3. VS Code 확장
+    - Database Client, Database Client JDBC 확장 설치
 
     ![alt text](image-8.png)
+
 
 ### DBeaver 사용법
 
@@ -332,12 +342,12 @@
         - `TO_NUMBER`(숫자로만 된 문자데이터, '숫자포맷') - 수로된 문자열을 숫자로 변경
         - `TO_DATE`(날짜형식문자데이터, '날짜포맷') - 문자데이터를 날짜데이터로 변경
 
-    - NULL 처리함수
+    - NULL 처리함수 - [쿼리](./day03/2.%20NULL함수.sql)
         - `null`(데이터없음)은 일부 개수처리나 통계 불가, null값 처리필요
         - `nvl`(널이들어간데이터, 널처리(0)) - 해당 값이 null이면 보통 0으로 변환
         - `nvl2`(널이들어간데이터, 널이아닐때처리, 널일때처리) - 널이 아닐때와 널일때로 나눠서 처리
 
-    - DECODE, CASE
+    - DECODE, CASE - [쿼리](./day03/3.%20decode_case.sql)
         - 특정열의 데이터가 어떤 데이터인지  따라 다르게 처리할 때
         - python의 if ~ elif ~ elif와 동일한 의미
         - `DECODE`(컬럼, 조건, 결과, ...) - 오라클 전용함수
@@ -345,7 +355,7 @@
 
 ### 다중행, 데이터 그룹화
 
-- 다중행 함수
+- 다중행(그룹) 함수 - [쿼리](./day03/4.%20다중행함수.sql)
     - 여러 행의 데이터를 바탕으로 하나의 결과를 도출하는 함수
     - `SUM`() - 데이터의 합, 급여, TAX, 점수 등 의미 있는 데이터만 합산할 것
     - `COUNT`() - 데이터 개수, NULL에 지대한 영향을 받는다. 데이터형에 영향을 받지 않음. *(ALL)도 가능
@@ -360,9 +370,10 @@
     select [기존과 동일], 다중행 함수
       from [테이블명|dual]
      where [조건식]
-    group by [그룹화할 열 지정] [ROLLUP|CUBE|GROUPING SETS]
+     group by [그룹화할 열 지정] [ROLLUP|CUBE|GROUPING SETS]
     HAVING [그룹함수 필터링]
-    order by [정렬조건]
+     order by [정렬조건]
+
     ```
 
     - 그룹화 시 유의점
@@ -374,11 +385,11 @@
     - 다중행 함수 등의 조건은 HAVING절로 처리해야 함.
     - 다중행(그룹) 함수는 WHERE절에 사용불가
 
-- 그룹화 관련 함수
-    - ROLLUP - 해당 컬럼별 합계 도출
-    - CUBE - 해당 컬럼별 상세 소계 도출
+- 그룹화 관련 함수 - [쿼리](./day03/6.%20그룹화2.sql)
+    - `ROLLUP` - 해당 컬럼별 합계 도출
+    - `CUBE` - 해당 컬럼별 상세 소계 도출
     - GROUPING SETS - 차후 ...
-    - PIVOT - 일반 데이터(세로출력)을 가로출력으로 변경
+    - `PIVOT` - 일반 데이터(세로출력)을 가로출력으로 변경
 
 ### SAMPLE 생성
 
@@ -403,11 +414,46 @@ SQL> alter session set nls_date_language='american';
 SQL> alter session set nls_date_format='dd-MON-rr'; 
 ```
 
- 
-
 ### 조인
 
-- 조인 기본 - [쿼리]
+- 조인 기본 - [쿼리](./day03/7.%20JOIN.sql)
 
 ## Day04
-- 조인 계속
+
+- 관계형 데이터베이스
+    - 관련된데이터를 테이블 형태로 저장하고, 테이블간 관계를 통해 데이터를 관리하는 DB모델.
+    - 테이블 - 테이터를 저장하는 구조. Table/Entity
+    - 레코드/로우 - 관련 데이터가 모두 모인 하나의 데이터 행. Record/Row/Tuple
+    - 컬럼 - 데이터 특징을 담는 하나의 속성. 열, Colum/Attribute
+    - PK - 각 행의 유일하게 식별하는 키. 여러개의 PK를 가질 수도 있음. PrimaryKey
+    - FK - 부모테이블의 PK와 관계를 맺는 키 Foreign key
+
+- ERD(Entity Relationship Diagram)
+    - 관계형 데이터베이스 구조를 그림으로 표현한 설계도
+    - 테이터베이스를 만들기 전에 어떤 테이블이 필요하고 어떤 관계를 맺어야 하는지 시각적 표현
+
+![alt text](image-11.png)
+
+- ERD 설명
+    - PK - DEPT.DEPTNO, EMP.EMPNO
+    - FK - EMP.DEPTNO
+    - 일반컬럼 - 그 외 나머지 컬럼
+    - 부자관계 - DEPT(부), EMP(자)
+
+
+- 조인 계속 
+    - 등가조인 - `내부조인`, `Inner Join`, Equi Join
+    - 비등가조인 - 등가조인 외의 방법, Between 등 사용. 많이 사용안함
+    - 셀프조인 - 자체조인. 자기테이블을 조인. 자기 테이블내에 해당 PK와 관련있는 FK가 지정되어 있어야
+        - 대부분 회사에서 조직도, 상사와 부하직원 관계볼 때 사용
+    - 외부조인 - 등가조인 반대. `Outer Join`. 조인 기준에서 일치하지 안는 데이터도 조회나오도록 하는 조인
+        - 왼쪽외부조인 - `Left Outer Join`. 왼쪽 테이블 기준으로 오른쪽 테이블에 일치하지 않는 데이터 조회
+        - 오른쪽외부조인 - `Right Outer Join`. 오른쪽 테이블 기준, 왼쪽 테이블에 일치하지 않는 데이터 조회
+
+- SQL -99 표준문법 조인
+    - JOIN ~ ON, INNER JOIN ~ ON - 내부조인, INNER는 생략 가능
+    - LEFT|RIGHT OUTER JOIN ~ ON - 외부조인, LEFT, RIGHT는 생략 불가능
+
+- 서브쿼리
+    - 메인쿼리 내에 소괄호로 포함된 추가쿼리. SubQuery
+    - 대부분 조인으로 변경 가능
