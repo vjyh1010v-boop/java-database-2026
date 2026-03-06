@@ -62,7 +62,7 @@
 
 2. Doker Command 사용
 
-    - PowerShell 오픈
+    - PowerShell 오픈 후, 도커 실행 확인
         ```bash
         docker --version
         Docker version 29.2.1, build a5c7197
@@ -97,15 +97,15 @@
 
     - 멈춰있는 컨테이너 실행
  
-    ```bash
-    docker start [컨테이너ID]
-    ```
+        ```bash
+        docker start [컨테이너ID]
+        ```
 
     - 컨테이너 자동 실행 명령
 
-    ``` bash
-    docker update --restart=always [컨테이너ID]
-    
+        ``` bash
+        docker update --restart=always [컨테이너ID]
+        ```
 
     - 컨테이너 내부 접속
 
@@ -159,7 +159,7 @@
 
 - Database Navigator 에서 DB연결 시작
 
-    ![alt text](image-5.png)
+        ![alt text](image-5.png)
 
     - 마우스 오른쪽버튼 > Create > Connection
 
@@ -170,6 +170,7 @@
 
 
         ![alt text](image-7.png)
+
 
 ### 기본 사용법
 
@@ -319,7 +320,7 @@
 
 ### 함수
 
-- 날짜 포맷 단어 * 가장 많이 쓰는 것
+- `날짜 포맷 단어` * 가장 많이 쓰는 것
     - YYYY, YY - 년도 네자리(2026), 두자리(26)
     - MM, MON, MONTH - 월 두자리(03), MAR, MARCH
     - DD, DDD, DY, DAY - 열 두자리(03), 62(1월 1일부터 며칠째), TUE(화), TUESDAY(화요일)
@@ -418,7 +419,9 @@ SQL> alter session set nls_date_format='dd-MON-rr';
 
 - 조인 기본 - [쿼리](./day03/7.%20JOIN.sql)
 
-ㅇ## Day04
+## Day04
+
+### 조인
 
 - 관계형 데이터베이스
     - 관련된데이터를 테이블 형태로 저장하고, 테이블간 관계를 통해 데이터를 관리하는 DB모델.
@@ -441,7 +444,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
     - 부자관계 - DEPT(부), EMP(자)
 
 
-- 조인 계속 
+- 조인 계속 - [쿼리](./day04/1.%20join%20다시.sql)
     - 등가조인 - `내부조인`, `Inner Join`, Equi Join
     - 비등가조인 - 등가조인 외의 방법, Between 등 사용. 많이 사용안함
     - 셀프조인 - 자체조인. 자기테이블을 조인. 자기 테이블내에 해당 PK와 관련있는 FK가 지정되어 있어야
@@ -450,16 +453,18 @@ SQL> alter session set nls_date_format='dd-MON-rr';
         - 왼쪽외부조인 - `Left Outer Join`. 왼쪽 테이블 기준으로 오른쪽 테이블에 일치하지 않는 데이터 조회
         - 오른쪽외부조인 - `Right Outer Join`. 오른쪽 테이블 기준, 왼쪽 테이블에 일치하지 않는 데이터 조회
 
-- SQL -99 표준문법 조인
+- SQL -99 표준문법 조인 - [쿼리](./day04/2.%20표준조인.sql)
     - JOIN ~ ON, INNER JOIN ~ ON - 내부조인, INNER는 생략 가능
     - LEFT|RIGHT OUTER JOIN ~ ON - 외부조인, LEFT, RIGHT는 생략 불가능
 
+### 서브쿼리
+
 - 서브쿼리
-    - 메인쿼리 내에 소괄호로 포함된 추가쿼리. `SubQuery`
+    - 메인쿼리 내에 소괄호()로 포함된 추가쿼리. `SubQuery`
     - 대부분 조인으로 변경 가능
     - 대부분 서브쿼리부터 작성 추천
 
-- 서브쿼리 종류
+- 서브쿼리 종류 - [쿼리](./day04/3.%20서브쿼리.sql)
     - 단일행 서브쿼리 - >, >=, =, <=, <, <>, != 비교연산자로 서브쿼리 사용
     - 다중행 서브쿼리 
         - `IN` - 메인쿼리 데이터가 서브쿼리 결과중 하나라도 일치하는 데이터가 있으면
@@ -476,8 +481,9 @@ SQL> alter session set nls_date_format='dd-MON-rr';
     - Data Manipulation Languae
     - Data Definition Language
     - Data Control Language
+    - Transation Control Language
 
-- DML
+- DML - [쿼리](./day04/4.%20DML.sql)
     - 데이터 조작 언어 - 데이터를 추가, 변경(수정), 삭제, 조회 하는 쿼리 명령어
     - SELECT - 조회용 .. 사전 학습 O
     - `INSERT` - 생성(추가)용
@@ -490,7 +496,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
 
     - `UPDATE` - 변경(수정)용. 조심할 것~
 
-    - `DELETE` - 삭제용. 조심할 것~
+    - `DELETE` - 삭제용. 조심할 것 !
     - SELECT는 저장된 데이터에 조작이 없음. 그 외는 전부 데이터를 조작함.
     - SELECT는 트랜잭션이 없고, 나머지는 트랜잭션이 매우 중요 !
 
@@ -501,6 +507,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
 
 - DML
     - `INSERT` - 데이터 생성 [쿼리](./day05/1.%20INSERT.sql)
+
         ```sql
         -- SELECT 결과를 그대로 테이블에 추가가능
         INSERT INTO 테이블명 (열1, 열2, ..., 열n)
@@ -519,7 +526,6 @@ SQL> alter session set nls_date_format='dd-MON-rr';
            SET 변경열1=열1변경값, 변경열2=열2변경값, ... --모든 열을 다 추가할 필요없음
          WHERE 데이터변경 대상행을 선별하기 위한 조건 -- 매우 중요 !
         ```
-
     - `DELETE` - 데이터 삭제
         - WHERE 절을 빼는 경우 정말 조심할 것 !
 
@@ -530,7 +536,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
 
 ### TCL
 
-- 트랜잭션
+- 트랜잭션 - [쿼리](./day05/1.%20INSERT.sql)
     - 논리적으로 처리되는 쿼리들의 집합
     - 여러개 테이블에 조회, 수정, 삭제 등이 이뤄지는 논리 덩어리
     - All or Nothing
@@ -560,7 +566,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
 - 데이터 정의어
     - 데이터베이스 객체 생성, 변경, 삭제하는 명령어
 
-- DDL 명령어
+- DDL 명령어 - [쿼리](./day05/5.%20DDL.sql)
     - `CREATE` - 객체 생성. 대부분 테이블 생성 시 사용
 
         ```SQL
@@ -577,7 +583,6 @@ SQL> alter session set nls_date_format='dd-MON-rr';
             [각 제약조건]
         );
         ```
-
     - `ALTER` - 객체 수정. 생성과 달리 수정할 수 있는 객체가 많이 없음
 
         ```sql
@@ -589,22 +594,147 @@ SQL> alter session set nls_date_format='dd-MON-rr';
             DROP COLUMN 삭제할열이름;
 
         ```
-
     - `DROP` - 객체 삭제. ALTER와 달리 대부분 객체에서 사용 가능
         - 테이블 등이 통채로 삭제되면 데이터 삭제. 주의할 것 ! 
+
         ```SQL
         DROP  객체타입 객체명;
         ```
-
     - `RENAME` - 객체 이름변경. 자주 사용안함
 
         ```SQL
         RENME 이전객체명 TO 새객체명
-
     - `TRUNCATE` - 객체 내 데이터 모두 삭제. 대부분 테이블에서 진행
-
         ```SQL
         -- DELETE FROM 테이블명 과 동일. 단, 트랜잭션이 발생하지 않아 복구 불가
         -- 테이블 생성 이후 상태가 됨
         TRUNCATE TABLE 테이블명
         ```
+
+## Day06
+
+### DDL
+
+- DDL 명령어 계속 - [쿼리](./day06/1.%20DDL.sql)
+    - 5일차와 동일
+
+### 객체
+
+- [쿼리](./day06/2.%20object.sql)
+
+    - 데이터 사전 - 일반 테이블 외 DB를 운영하는 데 필요한 특수한 테이블
+        - USER_XXXX - 현재 DB에 접속한 사용자가 소유한 객체 정보
+        - ALL_XXXX - 사용허가를 받은 객체 정보
+        - DBA_XXXX - DB 관리를 위한 정보(SYSTEM, SYS 사용자만 접근가능)
+        - VS_XXXX - DB 성능관련 정보
+
+- 인덱스
+    - `Full Table Scan` - 모든 테이블 데이터를 처음부터 끝까지 찾아서 데이터 조회
+    - Index Scan - 인덱스를 찾아서 해당 데이터를 조회
+    - 실제 DB의 5% 용량이 추가됨. 인덱스 데이터를 저장하므로
+    - 일정 시간마다 인덱스를 재정리. 데이터 쌓여가는 중간에도 재정리(시간소요)
+    - 보통 SELECT WHERE절에서 자주 필터링 되는 컬럼에 인덱스를 걸면 속도개선
+    - 대용량 데이터 (대략 몇천만건) 에서 속도개선을 위해서 인덱스 사용
+
+    ```SQL
+    -- 기본 문법
+    CREATE INDEX 인덱스명
+        ON 테이블명(인덱스열1 ASC|DESC,
+                        인덱스열2 ASC|DESC,
+                        ... );
+
+    -- 삭제
+    DROP INDEX 인덱스명;
+    ```
+
+ - 인덱스 종류
+    - `단일` 인덱스 - 하나의 컬럼에 거는 인덱스
+    - `복합` 인덱스 - 두개이상 컬럼에 거는 인덱스
+    - `고유` 인덱스 - 열에 중복 데이터가 없을때 사용
+    - `비고유` 인덱스 - 열에 중복 되는 데이터가 있을 때
+    - 함수기반 인덱스 - 산술식등으로 가공된 값을 인덱스로 사용 (연봉: SAL*12+COMM)
+    - 비트맵 인덱스 - 데이터종류는 적고 같은 데이터가 많이 존재할 때 사용하는 인덱스
+
+- 뷰
+    - 가상테이블을 만드는 객체
+    - 물리적인 데이터를 따로 저장하지 않음
+    - SELECT문의 복잡한 쿼리를 저장해서 간단하게 사용
+    - 테이블 특정 컬럼(민감한 급여, 보너스, 주민번호)을 노출하지 않을 경우
+    - `주의!` 보기 위한 객체지만 한 테이블의 SELECT * 인 뷰 경우 INSERT 가능
+
+        ```SQL
+        -- 기본 문법
+        CREATE [OR REPLACE] VIEW 뷰이름
+            AS (저장할 SELECT문)
+
+        -- 삭제
+        DROP VIEW 뷰이름;
+        ```
+
+- 시퀀스
+    - 오라클에만 존재하는 객체
+    - 순번을 자동으로 매겨주는 기능
+    
+        ```SQL
+        -- 생성
+        CREATE SEQUENCE 시퀀스명
+        START WITH n
+        INCREMENT BY p
+        [MAXVALUE m | NOMAXVALUE] -- NOMAXVALUE 10의 27승
+        [MINVALUE o | NONINVALUE] -- 
+        [CYCLE | NOCYCLE]
+        [CACHE r | NOCACHE]
+
+        -- 수정
+        ALTER SEQUENCE 시퀀스명
+        -- START WITH 이외 모두 사용가능
+
+        -- 삭제
+        DROP SEQUENCE 시퀀스명
+        ```
+
+- 동의어 - 생략 / 안씀 *
+
+### 제약조건
+
+- 제약조건 - [쿼리](./day06/3.%20제약조건.sql)
+    - 테이블에 저장할 데이터를 정확하게 규제하는 특수한 규칙
+    - 조건에 맞지 않는 데이터를 걸러내는 기능
+
+- 종류
+    - `NOT NULL` - 지정한 열에 NULL을 허용하지 않음. 무조건 데이터 입력
+        - 데이터 중복 허용
+    - `UNIQUE` - 지정한 열에 유일한 값이 되어야 함. 중복불가
+        - NULL은 중복에서 제외
+    - `PRIMARY KEY` - 지정한 열에 유일한 값이면서 NULL을 허용하지 않음.
+        - PK라고 하고, PK는 `UNIQUE`에 `NOT NULL`
+        - PK를 지정하면 자동으로 UNIQUE 인덱스가 생성.
+    - `FOREIGN KEY` - 다른 테이블의 PK열을 참조하여 PK열에 존재하는 값만 입력가능
+        - FK라고 하고, 설계에 따라 NOT NULL(식별관계)일 수도 있고, NULL(비식별관계) 일수도 있음.
+        - 자식테이블에서 PK로 지정 가능. 일반 컬럼으로 FK로만 지정 가능
+    - `CHECK` - 설정한 조건식에 일치하는 데이터만 입력 가능
+    - `DEFAULT` - 열에 데이터를 입력하지 않았을 때 기본값이 자동 입력
+
+- 데이터 무결성
+    - DB에 저장되는 데이터의 정확성과 일관성을 보장한다는 의미
+    - 영역 무결성(적절한 형식의 데이터나 NULL 불가), 개체 무결성(PK개념), 참조 무결성(FK개념)
+
+- CASCADE 계단식처리
+    - 부모 테이블의 PK 컬럼 해당데이터를 지우면 자식 테이블의 FK에 참조중인 레코드를 전부 지우는 기능
+    - ON DELETE CASCADE - 부모 테이블 데이터를 지우면 자식 데이터도 자동 삭제
+    - ON DELETE SET NULL - 부모 테이블 데이터를 지우면 자식 FK 데이터가 자동 NULL
+
+
+## Day07
+
+### 사용자, 권한, 롤
+
+### PL/SQL
+
+### 커서, 예외처리
+
+### 프로시저, 함수
+
+### 파이썬 오라클 연동
+
+### DB설계
