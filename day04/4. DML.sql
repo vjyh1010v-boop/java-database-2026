@@ -20,11 +20,15 @@ INSERT INTO dept_temp(deptno, dname, loc)
 VALUES ('SEVEN', 'STOCK','BUSAN');
 
 -- 이건들어가요
+INSERT INTO dept_temp (deptno, dname)
+VALUES (60, 'STOCK');
 
+INSERT INTO dept_temp (deptno, dname, loc)
+VALUES (70, 'TEST', NULL);
 
 
 -- EMP를 복사해서 EMP_TEMP 생성
-CREATE TABLE DEPT_TEMP
+CREATE TABLE emp_temp
     AS SELECT * FROM EMP;
 
 SELECT * FROM EMP_TEMP;

@@ -1,4 +1,4 @@
--- 서브쿼리
+-- 서브쿼리 /*서브쿼리*/
 
 -- 1. 사원 이름 JONES인 사원 급여 조회
 SELECT e.sal -- * > sal 로 변경
@@ -15,7 +15,7 @@ SELECT *
   FROM emp e
  WHERE e.sal >= (SELECT sal FROM emp WHERE ename = 'JONES');
 
--- 9-2 단일행 서브쿼리
+-- /*9-2 단일행 서브쿼리*?
 -- SCOTT 직원의 입사날짜보다 이전에 입사한 직원 조회
 SELECT E.HIREDATE -- * > 날짜 나오는 거 확인
   FROM EMP E
@@ -87,7 +87,7 @@ SELECT *
                    FROM EMP E
                   GROUP BY E.DEPTNO);
 
--- 39번 부서 사원들의 최대 급여보다 적은 급여를 받는 사원정보 조회
+-- 30번 부서 사원들의 최대 급여보다 적은 급여를 받는 사원정보 조회
 -- ANY, SOME -> OR조건
 SELECT *
   FROM EMP O
@@ -95,7 +95,7 @@ WHERE SAL > ANY (SELECT SAL
                    FROM EMP
                   WHERE DEPTNO = 30);
 
--- 39번 부서 사원들의 모든 급여보다 적은 급여를 받는 사원정보 조회
+-- 30번 부서 사원들의 모든 급여보다 적은 급여를 받는 사원정보 조회
 -- ALL -> AND 조건
 SELECT *
   FROM EMP O
@@ -133,6 +133,17 @@ SELECT *
  WHERE D.DEPTNO = E.DEPTNO;
 
 -- 복잡한 서브쿼리도 가능! *메모는 안해도 됨 (노션에 있음)
+SELECT count(*), sub1.DEPTNO 
+  FROM (
+			SELECT d.deptno, d.dname, d.loc, e.empno, e.입사일
+			  FROM dept d, (SELECT empno
+			                     , deptno 
+			                     , to_char(hiredate, 'yyyy-mm-dd') AS "입사일"
+			                  FROM emp) e
+			 WHERE d.deptno = e.deptno
+        ) sub1
+ GROUP BY sub1.DEPTNO;
+
 
 -- 둘다 서브쿼리로 사용
 SELECT E10.EMPNO, E10.ENAME, E10.DEPTNO, D.DNAME, D.LOC
@@ -159,4 +170,30 @@ SELECT *
                  WHERE DEPTNO = E1.DEPTNO)
  ORDER BY E1.DEPTNO, E1.SAL;
 
--- 나중에 명건선생님 깃보고 수정하기… 
+/* 9-6 SELECT절 서브쿼리 */
+SELECT e.empno
+     , e.ename
+     , e.job
+     , e.sal
+     , (SELECT grade
+          FROM salgrade
+         WHERE e.sal BETWEEN losal AND hisal) AS "SALGRADES"
+     , e.deptno
+     , (SELECT dname
+          FROM dept
+         WHERE deptno = e.deptno) AS "DEPARTMENTS"
+  FROM emp e
+ ORDER BY e.empno;
+
+-- JOIN으로 변경가능. 위 서브쿼리보다 성능개선
+SELECT e.empno
+     , e.ename
+     , e.job
+     , e.sal
+     , s.grade AS "SALGRADES"
+     , e.deptno
+     , d.dname AS "DEPARTMENTS"
+  FROM emp e, dept d, salgrade s
+ WHERE e.deptno = d.deptno
+   AND e.sal BETWEEN s.losal AND s.hisal
+ ORDER BY e.empno;

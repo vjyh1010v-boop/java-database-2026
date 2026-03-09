@@ -1,4 +1,20 @@
+-- 객체
+
+-- 데이터 사전
+-- 사용중인 객체를 확인하는 역할
+SELECT *
+FROM user_indexes;
+
+SELECT *
+  FROM USER_VIEWS;  -- 스키마 SYS 내 위치
+
 -- USER_OBJECTS, USER_RULES, USER_TABLES, USER_INDEXES, USER_VIEWS
+-- USER_SEQUENCES, 
+
+SELECT *
+  FROM dictionary
+ WHERE table_name LIKE 'USER_%'
+ ORDER BY table_name;
 
 -- 인덱스 생성
 -- IDX(인덱스 접두어)_테이블_인덱스컬럼
@@ -16,6 +32,10 @@ CREATE VIEW VW_EMP20
 
 SELECT * FROM VW_EMP20;
 
+SELECT * 
+   FROM VW_EMP20 v, dept d
+  WHERE v.deptno = d.deptno;
+
 -- 삭제
 DROP VIEW VW_EMP20;
 
@@ -23,17 +43,25 @@ SELECT *
   FROM VW_EMP20 V, DEPT D
  WHERE V.DEPTNO = D.DEPTNO;
 
+-- 뷰2
+CREATE OR REPLACE VIEW vw_dept_all
+    AS (SELECT * FROM dept);
 
+SELECT * FROM VW_dept_all;
 
--- 중간에 필기 못한거 나중에 하기
+INSERT INTO vw_dept_all (deptno, dname, loc)
+ VALUES ('90', 'TEST', 'NONE');
+
+COMMIT;
+
 
 -- 시퀀스
 -- 생성
 CREATE SEQUENCE SEQ_BOARD
-START WITH 1
-INCREMENT BY 1
-MAXVALUE 9999999
-NOCYCLE
+START WITH 1 -- 보통 1부터 시작
+INCREMENT BY 1  -- 보통 1씩 증가
+MAXVALUE 9999999  -- 또는 NOMAXVALUE
+NOCYCLE      -- MAXVALUE까지 가면 끝. CYCLE - MAX까지가면 다시 1
 NOCACHE;
 
 -- 게시판 테이블 생성
@@ -66,7 +94,14 @@ COMMIT;
 SELECT * FROM boardtbl;
 
 -- 다음 시퀀스 확인
-SELECT seq_board.nextval FROM dual;
+SELECT SEQ_BOARD.NEXTVAL FROM DUAL;
 
--- 현재 시퀀스 확인
-SELECT seq_board.currval FROM dual;
+SELECT SEQ_BOARD.CURRVAL FROM DUAL;
+
+-- 시퀀스 수정
+ALTER SEQUENCE SEQ_BOARD
+INCREMENT BY 2
+CYCLE;
+
+-- 시퀀스 삭제
+DROP SEQUENCE SEQ_BOARD;

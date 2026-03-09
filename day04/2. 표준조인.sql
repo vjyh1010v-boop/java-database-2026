@@ -9,7 +9,7 @@ SELECT d.deptno, d.dname, d.loc
 SELECT d.deptno, d.dname, d.loc
      , e.empno, e.ename, e.JOB 
      , e.hiredate, e.sal
-  FROM dept d LEFT OUTER JOIN emp e
+  FROM dept d INNER join emp e
     ON d.deptno = e.deptno
  WHERE d.deptno = 30;
 
