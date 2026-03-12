@@ -1181,7 +1181,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
         - ~~`퇴원` - `환자`가 `병실`에서 퇴원~~
         - 다대다(n:m) 관계는 만들지 않음. 물리 DB에서 이를 구현할 수 있음. `추후 학습 필요`
 
-     ![alt text](image-22.png)
+     ![alt text](image-35.png)
 
 #### 논리설계
 
@@ -1215,7 +1215,7 @@ SQL> alter session set nls_date_format='dd-MON-rr';
     - 노란색 + : 키 추가
     - 하늘색 + : 컬럼 추가
 
-    ![alt text](image-23.png)
+    ![alt text](image-34.png)
 
 3. 관계(없거나 한개 또는 여러개) 클릭
     - 부모테이블 클릭 후 자식테이블 클릭
@@ -1223,30 +1223,30 @@ SQL> alter session set nls_date_format='dd-MON-rr';
     - 식별관계는 부모의 PK가 자식의 PK이면서 FK - 무조건 NOT NULL
     - 비식별관계는 단순 FK - NOT NULL 또는 NULL 모두 허용
 
-    ![alt text](image-24.png)
+    ![alt text](image-31.png)
 
     - 결과
 
-    ![alt text](image-25.png)
+    ![alt text](image-30.png)
 
 4. 각 엔티티와 키와 속성 관계로 논리 다이어그램 작성
 
-    ![alt text](image-29.png)
+    ![alt text](image-32.png)
 
 5. 물리 다이어그램으로 변경 작성. 각 데이터 타입 수정
 
-    ![alt text](image-28.png)
+    ![alt text](image-33.png)
 
 6. 내보내기 클릭 - [쿼리](./day09/3.병원물리스키마_비식별관계.sql)
     - DB종류 선택 - 현재 Oracle
     - PK제약조건, FK제약조건, 비식별 제약조건 추가 선택
     - SQL 미리보기 클릭 후, 미리보기 복사
 
-    ![alt text](image-30.png)
+    ![alt text](image-28.png)
 
 7. DB툴에서 복사한 쿼리로 실행
 
-    ![alt text](image-31.png)
+    ![alt text](image-27.png)
 
 #### 모델링 시 주의점
 
@@ -1254,8 +1254,25 @@ SQL> alter session set nls_date_format='dd-MON-rr';
 - ERDCloud에서 식별관계 SQL쿼리를 제대로 생성못함
 - 관계에서 부모쪽 연결, 1(NOT NULL)과 0..1(NULL)의 차이 파악할 것
 
-![alt text](image-32.png)
+![alt text](image-26.png)
 
 ## Day10
 
+### DBeaver 팁
+
+- 자동완성 기능으로 사용에 불편한 점 (아래 항목 체크 해제 후 적용 > Apply and Close)
+    ![alt text](image-36.png)
+
 ### 인덱스 연습 프로젝트
+
+- 개요
+    - 인덱스 필요성, 성능 확인
+    - 인덱스 없이 조회는 느림, 인덱스를 생성 조회 빠름
+    - 아무 컬럼에나 인덱스걸면 안됨 -> 반대로 조회 느려짐
+    - 보통 `인덱스를 건다` 라고 이야기함
+
+#### 테스트 실행 순서
+
+- 주문 테이블 생성 - ODERS_BIG - [쿼리](./day10/1.인덱스테스트용_테이블.sql)
+- 300만건 더미데이터 생성 -[쿼리](./day10/2.300만건데이터.sql)
+- 인덱스 테스트 - [쿼리](./day10/3.%20인덱스테스트_쿼리.sql)
